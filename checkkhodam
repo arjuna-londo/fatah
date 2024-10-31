@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fatah cek khodam</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0,255,136,0.5);
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #00ff88;
+            border: none;
+            border-radius: 5px;
+            color: #1a1a2e;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ff88;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            animation: glow 2s infinite alternate;
+        }
+
+        #khodamImage {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            border-radius: 50%;
+            display: none;
+            animation: float 3s infinite ease-in-out;
+        }
+a
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px #00ff88;
+            }
+            to {
+                box-shadow: 0 0 20px #00ff88;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        h2 {
+            color: #ff9900;
+            text-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #ff9900; margin-bottom: 10px;">Fatah</h2>
+        <h1>✨ Cek Khodam-mu! ✨</h1>
+        <input type="text" id="nama" placeholder="Masukkan namamu...">
+        <button onclick="cekKhodam()">Temukan Khodam-mu!</button>
+        <img id="khodamImage" src="" alt="Khodam">
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const khodamList = [
+            {nama: "Sparkles si Peri Cahaya", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Felix"},
+            {nama: "Wispy si Angin Pembisik", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Lily"},
+            {nama: "Bubbles si Penjaga Air", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Zoe"},
+            {nama: "Ember si Api Bijak", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Max"},
+            {nama: "Rocky si Pelindung Tanah", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Rocky"},
+            {nama: "Misty si Kabut Misterius", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Luna"},
+            {nama: "Koko si Kucing Sakti", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Cat"},
+            {nama: "Popo si Penguin Penolong", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Penguin"},
+            {nama: "Rara si Rubah Bijaksana", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Fox"},
+            {nama: "Kiki si Kelinci Pelindung", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Rabbit"},
+            {nama: "Naga si Naga Mini", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Dragon"},
+            {nama: "Hiro si Hamster Hebat", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Hamster"},
+            {nama: "Jinny si Jin Ceria", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Genie1"},
+            {nama: "Lampu si Jin Pembawa Terang", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Genie2"},
+            {nama: "Jojo si Jin Pelawak", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Genie3"},
+            {nama: "Abra si Jin Penyihir", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Genie4"},
+            {nama: "Kazam si Jin Bijak", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Genie5"},
+            {nama: "Tuyul si Pencari Rejeki", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Tuyul"},
+            {nama: "Kunci si Kuncilongan Lucu", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Kuci"},
+            {nama: "Jenglot si Penjaga Harta", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Jenglot"},
+            {nama: "Buto si Buto Ijo Mini", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Buto"},
+            {nama: "Sundel si Sundel Bolong Imut", gambar: "https://api.dicebear.com/6.x/adventurer/svg?seed=Sundel"}
+        ];
+
+        function cekKhodam() {
+            const nama = document.getElementById('nama').value;
+            if (!nama) {
+                alert('Silakan masukkan nama terlebih dahulu!');
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * khodamList.length);
+            const khodam = khodamList[randomIndex];
+            
+            const khodamImage = document.getElementById('khodamImage');
+            khodamImage.src = khodam.gambar;
+            khodamImage.style.display = 'block';
+
+            const result = document.getElementById('result');
+            result.innerHTML = `
+                <h3>Selamat ${nama}! 🎉</h3>
+                <p>Khodam-mu adalah:</p>
+                <h2>${khodam.nama}</h2>
+                <p>Dia akan selalu menjagamu dan membantumu dalam perjalanan hidupmu! ✨</p>
+            `;
+        }
+    </script>
+</body>
+</html>
